@@ -16,7 +16,7 @@ $expected = array(
     ),
 );
 
-$actual = include('read-csv.php');
+$actual = include('csv-read.php');
 
 @assert('$expected == $actual') or var_dump(array(
     'expected' => $expected,
