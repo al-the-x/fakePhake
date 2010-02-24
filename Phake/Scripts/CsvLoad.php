@@ -1,32 +1,22 @@
 <?php
 /**
  * @author David Rogers <david@ethos-development.com>
+ * @package Phake_Scripts
+ * @category Resource_Scripts
  */
-
-/**
- * @var array of arguments passed to the script
- */
-$args = include('parse-args.php');
-
-/**
- * @var string filename to read in from
- */
-$infile = ( isset($args['--infile']) ? 
-    $args['--infile'] : null 
-);
 
 /**
  * If the $infile isn't readable, then we should throw
  * an appropriate Exception to halt processing.
  */
-if ( !is_readable($infile) ) throw new Exception(
+if ( !is_readable($filename) ) throw new Exception(
     'Supplied input file does not exist: ' . $infile
 );
 
 /**
  * @var resource fopen() handle marked for reading
  */
-$infile = fopen($infile, 'r');
+$infile = fopen($filename, 'r');
 
 /**
  * @var array of $data, which are associative arrays of $values indexed by $fields
@@ -36,7 +26,9 @@ $data = array();
 /**
  * @var array of field names extracted from the first line of the $infile
  */
-$data['fields'] = fgetcsv($infile);
+$fields = ( $get_fields ? 
+    fgetcsv($infile) : array()
+);
 
 /**
  * Using an assignmen in the control loop here isn't my favorite tactic
@@ -50,7 +42,9 @@ while ( $values = fgetcsv($infile) )
      * Combining the $fields and $values produces an appropriae associative
      * array of $values indexed by the $fields.
      */
-    $data[] = array_combine($data['fields'], $values);
+    $data[] = ( $fields ? 
+        array_combine($fields, $values) : $values
+    );
 }
 
 /**
@@ -58,5 +52,5 @@ while ( $values = fgetcsv($infile) )
  * and assigned to a variable directly, a la:
  *    $data = include('this-script.php');
  */
-return $data;
+return array( $data, $fields );
 
