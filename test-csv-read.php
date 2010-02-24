@@ -9,6 +9,11 @@ $argv = array(
 );
 
 $expected = array(
+    'fields' => array(
+        'field',
+        'long-field',
+        'after-long-field',
+    ),
     array(
         'field' => 'value',
         'long-field' => 'really long value with' . "\n" . 'line breaks and' . "\n" . 'everything.',

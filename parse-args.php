@@ -74,6 +74,12 @@ while ( current($argv) !== false )
 } // END while ($current)
 
 /**
+ * In order to play nice with other scripts, let's put the
+ * $argv array back like we found it.
+ */
+array_unshift($argv, $script);
+
+/**
  * Returning the $args allows them to be available in a
  * include()ing script with a simple assignment, i.e.
  *    $args = include('this-script.php');

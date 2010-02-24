@@ -36,7 +36,7 @@ $data = array();
 /**
  * @var array of field names extracted from the first line of the $infile
  */
-$fields = fgetcsv($infile);
+$data['fields'] = fgetcsv($infile);
 
 /**
  * Using an assignmen in the control loop here isn't my favorite tactic
@@ -50,7 +50,7 @@ while ( $values = fgetcsv($infile) )
      * Combining the $fields and $values produces an appropriae associative
      * array of $values indexed by the $fields.
      */
-    $data[] = array_combine($fields, $values);
+    $data[] = array_combine($data['fields'], $values);
 }
 
 /**
