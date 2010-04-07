@@ -1,15 +1,11 @@
 <?php
 
-require_once 'PHPUnit/Framework.php';
-
-require_once 'Phake/Providers/Csv.php';
-
-class Phake_Providers_CsvTest
+class Phake_Model_CsvTest
 extends PHPUnit_Framework_TestCase
 {
     public function setUp ( )
     {
-        $this->fixture = new Phake_Providers_Csv;
+        $this->fixture = new Phake_Model_Csv;
     } // END setUp
 
 
@@ -44,7 +40,7 @@ extends PHPUnit_Framework_TestCase
         );
 
         $this->assertSame($this->fixture,
-            $this->fixture->load('sample.csv')
+            $this->fixture->load('example/sample.csv')
         );
 
         $this->assertSame(array(
@@ -55,14 +51,14 @@ extends PHPUnit_Framework_TestCase
     } // END test_load
 
 
-    public function test_drop ( )
+    public function test_dropColumn ( )
     {
         $this->test_load();
 
-        $Clone = $this->fixture->drop('sample');
+        $Actual = $this->fixture->dropColumn('sample');
 
-        $this->assertNotSame($this->fixture, $Clone,
-            'The drop() method should return a $Clone of the $fixture.'
+        $this->assertNotSame($this->fixture, $Actual,
+            'The dropColumn() method should return a clone of the $fixture.'
         );
 
 
@@ -71,9 +67,9 @@ extends PHPUnit_Framework_TestCase
         );
 
         $this->assertFalse($Actual->has('sample'),
-            'The $Clone should NOT have the "sample" field.'
+            'The clone should NOT have the "sample" field.'
         );
-   } // END test_drop
+    } // END test_dropColumn
 
-} // END Phake_Providers_CsvTest
+} // END Phake_Model_CsvTest
 

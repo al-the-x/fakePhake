@@ -1,15 +1,16 @@
 <?php
 
-require_once 'Phake/Providers/Abstract.php';
-
-class Phake_Providers_Csv
-extends Phake_Providers_Abstract
+class Phake_Model_Csv
+extends Phake_Model_Abstract
 {
-    protected $_options_defaults = array(
-        'get-fields' => true,
-    ); // END $_options_default
+    const OPTIONS_INFILE = 'infile';
 
-    protected $_data = array();
+    const OPTIONS_GETFIELDS = 'get-fields';
+
+
+    protected $_defaults = array(
+        self::OPTIONS_GETFIELDS => true,
+    ); // END $_defaults
 
 
     public function toArray ( )
@@ -26,14 +27,13 @@ extends Phake_Providers_Abstract
     public function load ( $filename = null )
     {
         $filename = ( is_null($filename) ?
-            $this->getOption('infile') : $filename
+            $this->getOption(self::OPTIONS_INFILE) : $filename
         );
 
         if ( !is_readable($filename) )
         {
-            throw new Phake_Providers_Exception(
+            throw new Phake_Model_Exception(
                 'Provided filename is not readable: ' . $filename,
-                Phake_Providers_Exception::FILESYSTEM_MISSING
             );
         } 
 
@@ -45,7 +45,7 @@ extends Phake_Providers_Abstract
     } // END load
 
 
-    public function drop ( $column )
+    public function dropColumn ( $column )
     {
         if ( is_numeric($column) )
         {
@@ -60,7 +60,7 @@ extends Phake_Providers_Abstract
         }
 
         // return a copy of $this with $column removed...
-    } // END drop
+    } // END dropColumn
 
-} // END Phake_Providers_Csv
+} // END Phake_Model_Csv
 
