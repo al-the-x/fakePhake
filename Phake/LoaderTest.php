@@ -33,12 +33,20 @@ extends PHPUnit_Framework_TestCase
 
     public function test_load ( )
     {
+        $this->assertFalse(class_exists('Phake_Version', false));
+
+        $this->fixture->load('Phake_Version');
+
+        $this->assertTrue(class_exists('Phake_Version', false));
+    } // END test_load
+
+
+    public function test_autoload ( )
+    {
         $this->assertFalse(class_exists('example_Class', false));
 
-        $this->fixture->load('example_Class');
-
-        $this->assertTrue(class_exists('example_Class', false));
-    } // END test_load
+        $this->assertTrue(class_exists('example_Class', true));
+    } // END test_autoload
 
 
     public function test_register ( )

@@ -18,6 +18,7 @@ class Phake_Loader
      * if none is specified.
      *
      * @param callback $callback to register()
+     * @throws Phake_Exception if $callback cannot be registered
      */
     public static function register ( $callback = null )
     {
@@ -43,6 +44,7 @@ class Phake_Loader
      * @param array $local_vars to extract() into the local scope before load()ing
      * @param boolean $require $classname or just include() it?
      * @param boolean $once if we should use require_once() or include_once()
+     * @throws Phake_Exception if the expected $filename does not exist for $classname
      */
     public static function load ( $classname, $local_vars = array(), $require = true, $once = true )
     {
@@ -50,6 +52,24 @@ class Phake_Loader
          * @todo Use a configurable Inflector instead of hard-coded instructions to determine the $filename
          */
         $filename = strtr($classname, '_', DIRECTORY_SEPARATOR) . '.php';
+
+        /**
+         * Phake_Loader checks for the existence of the $filename before
+         * attempting any require()s or include()s and throws an appropriate
+         * Exception if it doesn't exist.
+         */
+        if ( !file_exists($filename) )
+        {
+            /**
+             * The only time we should ever need to explicitly require()
+             * a file in the whole library, thanks to autoloading.
+             */
+            require_once 'Phake/Exception.php';
+
+            throw new Phake_Exception(
+                'The specified filename does not exist: ' . $filename
+            );
+        } 
 
         /**
          * The $local_vars are extract()ed into the local scope prior to
