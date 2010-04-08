@@ -44,21 +44,21 @@ class Phake_Loader
      * @param array $local_vars to extract() into the local scope before load()ing
      * @param boolean $require $classname or just include() it?
      * @param boolean $once if we should use require_once() or include_once()
-     * @throws Phake_Exception if the expected $filename does not exist for $classname
+     * @throws Phake_Exception if the expected $class_file does not exist for $classname
      */
     public static function load ( $classname, $local_vars = array(), $require = true, $once = true )
     {
         /**
-         * @todo Use a configurable Inflector instead of hard-coded instructions to determine the $filename
+         * @todo Use a configurable Inflector instead of hard-coded instructions to determine the $class_file
          */
-        $filename = strtr($classname, '_', DIRECTORY_SEPARATOR) . '.php';
+        $class_file = strtr($classname, '_', DIRECTORY_SEPARATOR) . '.php';
 
         /**
-         * Phake_Loader checks for the existence of the $filename before
+         * Phake_Loader checks for the existence of the $class_file before
          * attempting any require()s or include()s and throws an appropriate
          * Exception if it doesn't exist.
          */
-        if ( !file_exists($filename) )
+        if ( !file_exists($class_file) )
         {
             /**
              * The only time we should ever need to explicitly require()
@@ -67,29 +67,56 @@ class Phake_Loader
             require_once 'Phake/Exception.php';
 
             throw new Phake_Exception(
-                'The specified filename does not exist: ' . $filename
+                'The specified filename does not exist: ' . $class_file
             );
         } 
 
         /**
          * The $local_vars are extract()ed into the local scope prior to
-         * the inclusion of the $filename, so that explicit calls to load()
+         * the inclusion of the $class_file, so that explicit calls to load()
          * can be made for "resource" files that return a value.
          */
         extract($local_vars);
 
         /**
-         * The $require and $once flags indicate whether the $filename should
+         * The $require and $once flags indicate whether the $class_file should
          * be require()d or include()d and whether to use the "_once()" variations.
          */
-        if ( $require and $once ) return require_once $filename;
+        if ( $require and $once ) return require_once $class_file;
 
-        if ( $require ) return require $filename;
+        if ( $require ) return require $class_file;
 
-        if ( $once ) return include_once $filename;
+        if ( $once ) return include_once $class_file;
 
-        return include $filename;
+        return include $class_file;
     } // END load
         
+
+    /**
+     * The loadScript() method only loads "Scripts": procedural code that returns some
+     * interesting values. For the most part, these files expect certain variables to
+     * exist in the local scope, which load() extract()s from the $local_vars parameter.
+     * If the $scriptname isn't "namespaced", loadScript() will add the "Phake_Scripts"
+     * prefix before load()ing.
+     *
+     * @param string $scriptname to load()
+     * @param array $local_vars to extract() into the local scope before load()ing
+     * @return mixed values provided by $scriptname
+     */
+    public static function loadScript ( $scriptname, $local_vars = array() )
+    {
+        /**
+         * If the "namespace" prefix of a $scriptname is omitted, loadScript() prepends
+         * "Phake_Scripts" by default.
+         */
+        if ( strpos('_', $scriptname) === false )
+        {
+            $scriptname = 'Phake_Scripts_' . $scriptname;
+        }
+
+        return self::load($scriptname, $local_vars, false, false);
+
+    } // END loadScript
+
 } // END Phake_Loader
 
