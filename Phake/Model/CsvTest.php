@@ -43,11 +43,15 @@ extends PHPUnit_Framework_TestCase
             $this->fixture->load('example/sample.csv')
         );
 
-        $this->assertSame(array(
+        $expected = array(
             0 => array(
                 'sample' => 'data',
-            ), // END line 0
-        ), $this->fixture->toArray());
+            ),
+        ); // END $expected
+
+        $this->assertSame(
+            $expected, $this->fixture->toArray()
+        );
     } // END test_load
 
 
@@ -55,10 +59,18 @@ extends PHPUnit_Framework_TestCase
     {
         $this->test_load();
 
+        $this->assertTrue($this->fixture->has('sample'),
+            'The $fixture should have a "sample" column.'
+        );
+
         $Actual = $this->fixture->dropColumn('sample');
 
         $this->assertNotSame($this->fixture, $Actual,
-            'The dropColumn() method should return a clone of the $fixture.'
+            'The dropColumn() method should return a clone of the $fixture, not the original.'
+        );
+
+        $this->assertTrue($Actual instanceof $this->fixture,
+            'The object returned by dropColumn() should still of the same type as the $fixture.'
         );
 
 

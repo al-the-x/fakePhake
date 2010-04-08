@@ -88,7 +88,7 @@ abstract class Phake_Model_Abstract
 
 
     /**
-     * The getOptions() method accepts an option $name in dotted syntax
+     * The getOption() method accepts an option $name in dotted syntax
      * and returns the value for that key. It proxies to the $_Options
      * object, which is an instance of Phake_Pattern_Options.
      *
