@@ -133,7 +133,7 @@ extends Phake_Model_Abstract
          */
         list( $field_values, $field_names ) = Phake_Loader::loadScript('CsvLoad', array( 
             'get_fields' => $this->getOption(self::OPTIONS_GETFIELDS),
-            'filename'   => $filename,
+            'infile'   => $filename,
         ));
 
         /**
