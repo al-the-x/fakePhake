@@ -1,7 +1,15 @@
 <?php
+/**
+ * @author David Rogers <david@ethos-development.com>
+ * @package Phake_Providers
+ * @category Exceptions
+ */
 
-require_once 'Phake/Exception.php';
-
+/**
+ * @author David Rogers <david@ethos-development.com>
+ * @package Phake_Providers
+ * @category Exceptions
+ */
 class Phake_Providers_Exception
 extends Phake_Exception
 {

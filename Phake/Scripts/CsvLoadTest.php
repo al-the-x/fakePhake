@@ -1,7 +1,15 @@
 <?php
+/**
+ * @author David Rogers <david@ethos-development.com>
+ * @package Phake_Scripts
+ * @category Test_Cases
+ */
 
-require_once 'PHPUnit/Framework.php';
-
+/**
+ * @author David Rogers <david@ethos-development.com>
+ * @package Phake_Scripts
+ * @category Test_Cases
+ */
 class Phake_Scripts_CsvLoadTest
 extends PHPUnit_Framework_TestCase
 {
@@ -22,9 +30,7 @@ extends PHPUnit_Framework_TestCase
         $this->assertSame(array(
             0 => array(
                 'field' => 'value', 
-                'long-field' => 'really long value with
-line breaks and
-everything.',
+                'long-field' => "really long value with\nline breaks and\neverything.",
                 'after-long-field' => 'value after long field'
            ), // END line 0
         ), $values);

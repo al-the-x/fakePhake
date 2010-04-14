@@ -1,9 +1,15 @@
 <?php
+/**
+ * @author David Rogers <david@ethos-development.com>
+ * @package Phake_Providers
+ * @category Test_Cases
+ */
 
-require_once 'PHPUnit/Framework.php';
-
-require_once 'Phake/Providers/AbstractFixture.php';
-
+/**
+ * @author David Rogers <david@ethos-development.com>
+ * @package Phake_Providers
+ * @category Test_Cases
+ */
 class Phake_Providers_AbstractTest
 extends PHPUnit_Framework_TestCase
 {

@@ -21,18 +21,6 @@ extends PHPUnit_Framework_TestCase
     } // END setUp
 
 
-    public function test_getOptions ( )
-    {
-        $this->assertTrue(method_exists($this->fixture, 'getOptions'),
-            'The $fixture should have a getOptions() method.'
-        );
-
-        $this->assertEquals(array(
-            'get-fields' => true,
-        ), $this->fixture->getOptions());
-    } // END getOptions
-
-    
     public function test_toArray ( )
     {
         $this->assertTrue(method_exists($this->fixture, 'toArray'),
@@ -88,6 +76,33 @@ extends PHPUnit_Framework_TestCase
     } // END test_load
 
 
+    public function test_isLoaded ( $expected = false )
+    {
+        $this->assertEquals($expected, $this->fixture->isLoaded(),
+            'The $fixture ' . ( $expected ? 'should' : 'should NOT' ) . ' be load()ed.'
+        );
+        
+        return $this; // for method chaining
+    } // END test_isLoaded
+
+
+    public function test_autoload ( )
+    {
+        $this->fixture = new Phake_Model_Csv(array(
+            'infile' => 'example/simple.csv',
+        ));
+
+        $this->test_isLoaded(false);
+
+        $this->fixture = new Phake_Model_Csv(array(
+            'infile' => 'example/simple.csv',
+            'load-file' => true,
+        ));
+
+        $this->test_isLoaded(true);
+    } // END test_autoload
+
+
     public function test_dropColumn ( )
     {
         $this->test_load();
@@ -116,5 +131,45 @@ extends PHPUnit_Framework_TestCase
         );
     } // END test_dropColumn
 
+
+    public function provide_find ( )
+    {
+        return array(
+            'find code = 10000' => array(
+                array( 'code' => 10000 ),
+                array( array( 'code' => 10000, 'value' => 'ten' ) ),
+            ), // END dataset
+            'find code = 15000' => array(
+                array( 'code' => 15000 ),
+                array( array( 'code' => 15000, 'value' => 'fifteen' ) ),
+            ), // END dataset
+            'find value = "twelve"' => array(
+                array( 'value' => 'twelve'),
+                array( array( 'code' => 12000, 'value' => 'twelve' ) ),
+            ), // END dataset
+            'criteria matches nothing' => array(
+                array( 'value' => 'foo'),
+                array( ),
+            ), // END dataset
+        ); // END datasets
+    } // END provide_find
+
+
+    /**
+     * @dataProvider provide_find
+     * @param array $criteria to find()
+     * @param array $expected data returned from find()
+     */
+    public function test_find ( $criteria, $expected )
+    {
+        $this->assertTrue(method_exists($this->fixture, 'find'));
+        
+        $this->fixture->load('example/lengthy.csv');
+
+        $actual = $this->fixture->find($criteria);
+
+        $this->assertEquals($expected, $actual);
+
+    } // END test_find
 } // END Phake_Model_CsvTest
 

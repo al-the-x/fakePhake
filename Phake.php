@@ -1,32 +1,53 @@
 #!/usr/bin/env php
 <?php
+/**
+ * @author David Rogers <david@ethos-development.com>
+ * @package Phake
+ * @category Bootstraps
+ *
+ * @todo Refactor into an Object for Pete's sake... O_O
+ */
 
 require 'Phake/Loader.php';
 Phake_Loader::register();
 
-$args = Phake_Loader::load('Phake_Scripts_GetArgs');
-print_r($args);
+$args = Phake_Loader::loadScript('GetArgs');
 
-try
+$commands = array();
+$values = array();
+
+if ( isset($args['--version']) or isset($args['-v']) )
 {
-    @list( $provider, $action ) = split('::', $args['--action']);
+    array_push($values, 'Phake version ' . Phake_Version::VERSION);
+} // END if --version
 
-    $provider = 'Phake_Providers_' . ucfirst($provider);
-    Phake_Loader::load($provider);
-
-    $Provider = new $provider($args);
-
-    $Provider->$action();
-}
-
-catch ( Phake_Providers_Exception $Error )
+if ( isset($args['--transaction']) )
 {
-    if ( $Error->getCode() == Phake_Providers_Exception::METHOD_MISSING )
-    {
-        echo $Error->getMessage(), "\n";
+    array_push($commands, array
+    (
+        'callback' => array('Phake_Transaction', 'factory'),
+        'arguments' => $args['--transaction'],
+    )); // END array_push()
+
+} // END if --transaction
+
+foreach ( $commands as $command )
+{
+    try 
+    { 
+        array_push($values, call_user_func_array($command['callback'], $command['arguments']));
     }
 
-    else throw $Error;
-} // END catch
+    catch (Phake_Exception $Error)
+    {
+        /**
+         * @todo Push the Exception stack trace into the output, too, maybe if a --debug flag is set?
+         */
+        array_push($values, 'Exception Thrown: ' . $Error->getMessage(), "\n");
+    } // END catch
+} // END foreach
 
-
+foreach ( $values as $value )
+{
+    echo $value, "\n\n";
+} // END foreach $values

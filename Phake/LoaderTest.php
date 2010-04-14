@@ -6,11 +6,6 @@
  */
 
 /**
- * The fixture class: Phake_Loader
- */
-require_once 'Phake/Loader.php';
-
-/**
  * @author David Rogers <david@ethos-development.com>
  * @package Phake_Loader
  * @category Test_Cases

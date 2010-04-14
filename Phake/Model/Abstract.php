@@ -25,7 +25,7 @@ abstract class Phake_Model_Abstract
     /**
      * @var Phake_Pattern_Options for this instance
      */
-    private $_Options = null;
+    protected $_Options = null;
 
     /**
      * @var array map of option keys to values to be used as defaults
@@ -57,7 +57,16 @@ abstract class Phake_Model_Abstract
     public function __construct ( $options = array() )
     {
         $this->_setOptions((array) $options);
+
+        $this->_init();
     } // END __construct
+
+
+    /**
+     * The _init() method is executed at the end of the __construct()or, to
+     * allow decendent classes to implement post-construction actions.
+     */
+    protected function _init ( ) { } 
 
 
     /**

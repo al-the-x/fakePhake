@@ -1,7 +1,15 @@
 <?php
+/**
+ * @author David Rogers <david@ethos-development.com>
+ * @package Phake_Providers
+ * @category Providers
+ */
 
-require_once 'Phake/Providers/Exception.php';
-
+/**
+ * @author David Rogers <david@ethos-development.com>
+ * @package Phake_Providers
+ * @category Providers
+ */
 abstract class Phake_Providers_Abstract
 {
     protected $_options_defaults = array();

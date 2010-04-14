@@ -2,15 +2,13 @@
 /**
  * @author David Rogers <david@ethos-development.com>
  * @package Phake_Scripts
- * @category Unit_Tests
+ * @category Test_Cases
  */
-
-require_once 'PHPUnit/Framework.php';
 
 /**
  * @author David Rogers <david@ethos-development.com>
  * @package Phake_Scripts
- * @category Unit_Tests
+ * @category Test_Cases
  */
 class Phake_Scripts_GetArgsTest
 extends PHPUnit_Framework_TestCase

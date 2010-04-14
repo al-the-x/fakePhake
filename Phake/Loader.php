@@ -58,7 +58,7 @@ class Phake_Loader
          * attempting any require()s or include()s and throws an appropriate
          * Exception if it doesn't exist.
          */
-        if ( !file_exists($class_file) )
+        if ( !@fopen($class_file, 'r', true) )
         {
             /**
              * The only time we should ever need to explicitly require()

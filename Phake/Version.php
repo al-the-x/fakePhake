@@ -12,9 +12,10 @@
  */
 class Phake_Version
 {
-    public static function getVersion ( )
-    {
-        return '0.1';
-    } // END getVersion
+    /**
+     * The current version of Phake
+     */
+    const VERSION = '0.1';
+
 } // END Phake_Version
 

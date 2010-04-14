@@ -9,14 +9,14 @@
  * If the $infile isn't readable, then we should throw
  * an appropriate Exception to halt processing.
  */
-if ( !is_readable($filename) ) throw new Exception(
+if ( !is_readable($infile) ) throw new Exception(
     'Supplied input file does not exist: ' . $infile
 );
 
 /**
  * @var resource fopen() handle marked for reading
  */
-$infile = fopen($filename, 'r');
+$infile = fopen($infile, 'r');
 
 /**
  * @var array of $data, which are associative arrays of $values indexed by $fields

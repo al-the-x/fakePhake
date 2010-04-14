@@ -1,12 +1,12 @@
 <?php
 /**
- * @author David Rogers
+ * @author David Rogers <david@ethos-development.com>
  * @package example
  * @category Test_Examples
  */
 
 /**
- * @author David Rogers
+ * @author David Rogers <david@ethos-development.com>
  * @package example
  * @category Test_Examples
  */

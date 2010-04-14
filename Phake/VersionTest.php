@@ -5,8 +5,6 @@
  * @category Test_Cases
  */
 
-require_once 'Phake/Version.php';
-
 /**
  * @author David Rogers <david@ethos-development.com>
  * @package Phake_Version
@@ -15,13 +13,9 @@ require_once 'Phake/Version.php';
 class Phake_VersionTest
 extends PHPUnit_Framework_TestCase
 {
-    public function test_getVersion ( )
+    public function test_VERSION ( )
     {
-        $this->assertTrue(method_exists(
-            'Phake_Version', 'getVersion'
-        ));
-
-        $this->assertSame('0.1', Phake_Version::getVersion());
+        $this->assertSame('0.1', Phake_Version::VERSION);
     } // END test_getVersion
 } // END Phake_VersionTest
 

@@ -1,13 +1,11 @@
 <?php
 /**
- * @license GPL3.0?
  * @author David Rogers <david@ethos-development.com>
  * @package Phake_Model
  * @category Exceptions
  */
 
 /**
- * @license GPL3.0?
  * @author David Rogers <david@ethos-development.com>
  * @package Phake_Model
  * @category Exceptions

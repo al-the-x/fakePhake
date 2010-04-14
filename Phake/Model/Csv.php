@@ -26,6 +26,17 @@ extends Phake_Model_Abstract
     const OPTIONS_GETFIELDS = 'get-fields';
 
     /**
+     * Key for the "load-file" option, which attempts to load() the "infile"
+     * upon instantiation.
+     */
+    const OPTIONS_LOADFILE = 'load-file';
+
+    /**
+     * @var boolean was load() successful?
+     */
+    protected $_loaded = false;
+
+    /**
      * @see Phake_Model_Abstract::$_defaults
      * @var array map of default $_Options for the class
      */
@@ -34,7 +45,22 @@ extends Phake_Model_Abstract
          * The first line of the CSV file should contain the field names...
          */
         self::OPTIONS_GETFIELDS => true,
+        /**
+         * Don't try to load() anything by default.
+         */
+        self::OPTIONS_LOADFILE => false,
     ); // END $_defaults
+
+
+    protected function _init ( )
+    {
+        parent::_init();
+
+        if ( $this->getOption(self::OPTIONS_LOADFILE) and $this->getOption(self::OPTIONS_INFILE) )
+        {
+            $this->load();
+        }
+    } // END _init
 
 
     /**
@@ -58,6 +84,16 @@ extends Phake_Model_Abstract
     {
         return $this->toArray();
     } // END __toArray
+
+
+    /**
+     * The isLoaded() method provides a read-only accessor to the protected
+     * $_loaded instance variable.
+     */
+    public function isLoaded ( )
+    {
+        return $this->_loaded;
+    } // END isLoaded()
 
 
     /**
@@ -112,6 +148,8 @@ extends Phake_Model_Abstract
             $field_names, array_fill(0, count($field_names), null)
         );
 
+        $this->_loaded = true;
+
         return $this; // for method chaining
     } // END load
 
@@ -150,6 +188,44 @@ extends Phake_Model_Abstract
 
         return $Object; // for method chaining
     } // END dropColumn
+
+
+    /**
+     * The find() method searches the $_values for the provided $criteria and
+     * returns an array of matching rows (for now).
+     *
+     * @param array $criteria to find()
+     * @return array of 0 or more "rows" from the CSV data
+     */
+    public function find ( array $criteria )
+    {
+        $matches = array();
+
+        foreach ( $this->_values as $row )
+        {
+            foreach ( $criteria as $field => $value )
+            {
+                if ( $row[$field] == $value )
+                {
+                    array_push($matches, $row);
+                }
+            } // END foreach $criteria
+        } // END foreach $_values
+
+        return $matches;
+    } // END find
+
+
+    /**
+     * The count() method returns the number of rows in the CSV data. If the
+     * data hasn't been load()ed yet, that's _your_ problem. ;)
+     *
+     * @return integer count() of the "rows" in $_values
+     */
+    public function count ( )
+    {
+        return count($this->_values);
+    } // END count
 
 } // END Phake_Model_Csv
 

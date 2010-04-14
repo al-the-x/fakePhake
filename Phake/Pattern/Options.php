@@ -25,18 +25,33 @@ class Phake_Pattern_Options
     /**
      * @var array of $_options for this instance
      */
-    protected $_options = array();
+    private $_options = array();
 
 
+    /**
+     * The __construct()or accepts an array of $options and optional
+     * $defaults, which it attempts to merge intelligently (for now
+     * just array_merge()). This is the only method of writing to the
+     * $_options instance variable.
+     */
     public function __construct ( $options, $defaults = array() )
     {
         $this->_options = array_merge(
-            (array) $options,
-            (array) $defaults
+            (array) $defaults,
+            (array) $options
         );
     } // END __construct
 
 
+    /**
+     * The _findOption() method is used to fetch an $option using
+     * dotted syntax for nested elements, for example:
+     *
+     *     "some.dotted.option" = $_options[some][dotted][option]
+     *
+     * @param string $option to find
+     * @return mixed value of $option or NULL if invalid
+     */ 
     protected function _findOption ( $option )
     {
         /**
@@ -98,12 +113,27 @@ class Phake_Pattern_Options
     } // END _findOption
 
 
+    /**
+     * The has() method returns boolean if the requested $option
+     * exists in $this instance.
+     *
+     * @param string $option to check
+     * @return boolean if $this has() $option
+     */
     public function has ( $option )
     {
         return ( !is_null($this->_findOption($option)) );
     } // END has
 
 
+    /**
+     * The get() method returns the value of the $option requested
+     * or throws an appropriate Exception if invalid.
+     *
+     * @param string $option to get()
+     * @return mixed value of $option if valid
+     * @throws Phake_Pattern_Exception if $option is invalid
+     */
     public function get ( $option )
     {
         $value = $this->_findOption($option);
@@ -118,12 +148,25 @@ class Phake_Pattern_Options
         return $value;
     } // END get
 
+    /**
+     * The magic __get() method just proxies to get().
+     *
+     * @see get()
+     */
     public function __get ( $option )
     {
         return $this->get($option);
     } // END __get
 
 
+    /**
+     * The magic __set() method just throws an appropriate Exception
+     * because Options are read-only, once set.
+     *
+     * @param string $option to set
+     * @param mixed $value to set
+     * @throws Phake_Pattern_Exception because Phake_Pattern_Options are read-only
+     */
     public function __set ( $option, $value )
     {
         throw new Phake_Pattern_Exception(
