@@ -67,7 +67,8 @@ class Phake_Loader
             require_once 'Phake/Exception.php';
 
             throw new Phake_Exception(
-                'The specified filename does not exist: ' . $class_file
+                'The specified filename does not exist: ' . $class_file .
+                '(include_path: ' . get_include_path()
             );
         } 
 
